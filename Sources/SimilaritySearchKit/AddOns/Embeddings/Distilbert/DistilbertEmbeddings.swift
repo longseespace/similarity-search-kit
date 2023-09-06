@@ -9,9 +9,9 @@ import Foundation
 import CoreML
 import SimilaritySearchKit
 
-@available(macOS 13.0, iOS 16.0, *)
+@available(macOS 12.0, *)
 public class DistilbertEmbeddings: EmbeddingsProtocol {
-    public let model: msmarco_distilbert_base_tas_b_512_single_quantized
+    public let model: msmarco_distilbert_base_tas_b
     public let tokenizer: BertTokenizer
     public let inputDimention: Int = 512
     public let outputDimention: Int = 768
@@ -21,7 +21,7 @@ public class DistilbertEmbeddings: EmbeddingsProtocol {
         modelConfig.computeUnits = .all
 
         do {
-            self.model = try msmarco_distilbert_base_tas_b_512_single_quantized(configuration: modelConfig)
+            self.model = try msmarco_distilbert_base_tas_b(configuration: modelConfig)
         } catch {
             fatalError("Failed to load the Core ML model. Error: \(error.localizedDescription)")
         }
@@ -43,7 +43,7 @@ public class DistilbertEmbeddings: EmbeddingsProtocol {
     }
 
     public func generateDistilbertEmbeddings(inputIds: MLMultiArray, attentionMask: MLMultiArray) -> [Float]? {
-        let inputFeatures = msmarco_distilbert_base_tas_b_512_single_quantizedInput(
+        let inputFeatures = msmarco_distilbert_base_tas_bInput(
             input_ids: inputIds,
             attention_mask: attentionMask
         )
